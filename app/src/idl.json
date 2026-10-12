@@ -1,0 +1,1232 @@
+{
+  "address": "BQtsc5bnJZ4ymM8CUnsSi8gR6f7NcZddTLTzWegfzLmB",
+  "metadata": {
+    "name": "escrowland",
+    "version": "0.2.0",
+    "spec": "0.1.0"
+  },
+  "instructions": [
+    {
+      "name": "approve_deal",
+      "docs": [
+        "FR-3.8/3.9: atomic delivery-versus-payment."
+      ],
+      "discriminator": [
+        74,
+        140,
+        209,
+        52,
+        24,
+        76,
+        199,
+        31
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "parcel",
+          "writable": true
+        },
+        {
+          "name": "deal",
+          "writable": true
+        },
+        {
+          "name": "seller",
+          "writable": true
+        },
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "registrar",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancel_deal",
+      "docs": [
+        "FR-3.11"
+      ],
+      "discriminator": [
+        158,
+        86,
+        193,
+        45,
+        168,
+        111,
+        48,
+        29
+      ],
+      "accounts": [
+        {
+          "name": "parcel",
+          "writable": true
+        },
+        {
+          "name": "deal",
+          "writable": true
+        },
+        {
+          "name": "seller",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claim_refund",
+      "docs": [
+        "FR-3.12/3.13/3.14: after reject/cancel, after timeout, or when encumbered."
+      ],
+      "discriminator": [
+        15,
+        16,
+        30,
+        161,
+        255,
+        228,
+        97,
+        60
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "parcel",
+          "writable": true
+        },
+        {
+          "name": "deal",
+          "writable": true
+        },
+        {
+          "name": "buyer",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_deal",
+      "docs": [
+        "FR-3.1/3.2/3.5/3.6: one named buyer, fixed price, one active deal per parcel."
+      ],
+      "discriminator": [
+        198,
+        212,
+        144,
+        151,
+        97,
+        56,
+        149,
+        113
+      ],
+      "accounts": [
+        {
+          "name": "parcel",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  114,
+                  99,
+                  101,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "parcel.id",
+                "account": "Parcel"
+              }
+            ]
+          }
+        },
+        {
+          "name": "deal",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  97,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "parcel"
+              },
+              {
+                "kind": "account",
+                "path": "parcel.deal_nonce",
+                "account": "Parcel"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "buyer",
+          "type": "pubkey"
+        },
+        {
+          "name": "price",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "fund_deal",
+      "docs": [
+        "FR-3.3/3.4: only the named buyer, exactly the price, paid in SOL into the Deal PDA."
+      ],
+      "discriminator": [
+        8,
+        26,
+        74,
+        169,
+        132,
+        56,
+        104,
+        60
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "parcel"
+        },
+        {
+          "name": "deal",
+          "writable": true
+        },
+        {
+          "name": "buyer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "registrar",
+          "type": "pubkey"
+        },
+        {
+          "name": "lender",
+          "type": "pubkey"
+        },
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        },
+        {
+          "name": "fee_bps",
+          "type": "u16"
+        },
+        {
+          "name": "timeout_sec",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "lift_encumbrance",
+      "docs": [
+        "FR-5.3: placer, or the registrar for disputes."
+      ],
+      "discriminator": [
+        196,
+        239,
+        232,
+        186,
+        70,
+        82,
+        47,
+        21
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "parcel",
+          "writable": true
+        },
+        {
+          "name": "signer",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "place_encumbrance",
+      "docs": [
+        "FR-5.1: kind 1 mortgage, 2 dispute, 3 court order."
+      ],
+      "discriminator": [
+        28,
+        226,
+        132,
+        210,
+        177,
+        223,
+        185,
+        247
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "parcel",
+          "writable": true
+        },
+        {
+          "name": "signer",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "kind",
+          "type": "u8"
+        },
+        {
+          "name": "reference_cid",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "register_parcel",
+      "docs": [
+        "FR-2: duplicate IDs fail because the parcel PDA already exists."
+      ],
+      "discriminator": [
+        170,
+        232,
+        221,
+        44,
+        109,
+        149,
+        104,
+        207
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "parcel",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  114,
+                  99,
+                  101,
+                  108
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "registrar",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": "u64"
+        },
+        {
+          "name": "owner",
+          "type": "pubkey"
+        },
+        {
+          "name": "lat_e6",
+          "type": "i32"
+        },
+        {
+          "name": "lng_e6",
+          "type": "i32"
+        },
+        {
+          "name": "area_sqm",
+          "type": "u32"
+        },
+        {
+          "name": "document_cid",
+          "type": "string"
+        },
+        {
+          "name": "document_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "reject_deal",
+      "docs": [
+        "FR-3.10: parcel is freed; buyer pulls the refund with `claim_refund`."
+      ],
+      "discriminator": [
+        104,
+        158,
+        142,
+        21,
+        114,
+        217,
+        18,
+        114
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "parcel",
+          "writable": true
+        },
+        {
+          "name": "deal",
+          "writable": true
+        },
+        {
+          "name": "registrar",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update_config",
+      "discriminator": [
+        29,
+        158,
+        252,
+        191,
+        10,
+        83,
+        219,
+        99
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "registrar",
+          "type": "pubkey"
+        },
+        {
+          "name": "lender",
+          "type": "pubkey"
+        },
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        },
+        {
+          "name": "fee_bps",
+          "type": "u16"
+        },
+        {
+          "name": "timeout_sec",
+          "type": "i64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    },
+    {
+      "name": "Deal",
+      "discriminator": [
+        125,
+        223,
+        160,
+        234,
+        71,
+        162,
+        182,
+        219
+      ]
+    },
+    {
+      "name": "Parcel",
+      "discriminator": [
+        149,
+        167,
+        245,
+        67,
+        209,
+        244,
+        214,
+        75
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "DealCancelled",
+      "discriminator": [
+        229,
+        189,
+        86,
+        176,
+        134,
+        151,
+        43,
+        152
+      ]
+    },
+    {
+      "name": "DealCompleted",
+      "discriminator": [
+        3,
+        185,
+        99,
+        192,
+        252,
+        161,
+        216,
+        28
+      ]
+    },
+    {
+      "name": "DealFunded",
+      "discriminator": [
+        64,
+        84,
+        19,
+        153,
+        179,
+        255,
+        127,
+        144
+      ]
+    },
+    {
+      "name": "DealListed",
+      "discriminator": [
+        33,
+        8,
+        33,
+        180,
+        72,
+        88,
+        95,
+        101
+      ]
+    },
+    {
+      "name": "DealRejected",
+      "discriminator": [
+        178,
+        122,
+        156,
+        24,
+        174,
+        54,
+        191,
+        183
+      ]
+    },
+    {
+      "name": "EncumbranceLifted",
+      "discriminator": [
+        201,
+        234,
+        173,
+        57,
+        12,
+        31,
+        55,
+        81
+      ]
+    },
+    {
+      "name": "EncumbrancePlaced",
+      "discriminator": [
+        116,
+        129,
+        79,
+        171,
+        131,
+        239,
+        131,
+        133
+      ]
+    },
+    {
+      "name": "ParcelRegistered",
+      "discriminator": [
+        135,
+        44,
+        33,
+        59,
+        6,
+        1,
+        21,
+        83
+      ]
+    },
+    {
+      "name": "RefundClaimed",
+      "discriminator": [
+        136,
+        64,
+        242,
+        99,
+        4,
+        244,
+        208,
+        130
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Unauthorized",
+      "msg": "Signer is not authorized for this action"
+    },
+    {
+      "code": 6001,
+      "name": "NotOwner",
+      "msg": "Only the parcel owner can do this"
+    },
+    {
+      "code": 6002,
+      "name": "NotBuyer",
+      "msg": "Only the named buyer can do this"
+    },
+    {
+      "code": 6003,
+      "name": "ActiveDeal",
+      "msg": "Parcel already has an active deal"
+    },
+    {
+      "code": 6004,
+      "name": "Encumbered",
+      "msg": "Parcel is encumbered"
+    },
+    {
+      "code": 6005,
+      "name": "BadState",
+      "msg": "Deal is not in the right state"
+    },
+    {
+      "code": 6006,
+      "name": "NotRefundable",
+      "msg": "Funds are not refundable yet"
+    },
+    {
+      "code": 6007,
+      "name": "BadAmount",
+      "msg": "Amount must be greater than zero"
+    },
+    {
+      "code": 6008,
+      "name": "BadFee",
+      "msg": "Fee must be 10000 bps or less"
+    },
+    {
+      "code": 6009,
+      "name": "BadKind",
+      "msg": "Encumbrance kind must be 1, 2 or 3"
+    }
+  ],
+  "types": [
+    {
+      "name": "Config",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "registrar",
+            "type": "pubkey"
+          },
+          {
+            "name": "lender",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "timeout_sec",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Deal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parcel",
+            "type": "pubkey"
+          },
+          {
+            "name": "nonce",
+            "type": "u32"
+          },
+          {
+            "name": "seller",
+            "type": "pubkey"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "funded_at",
+            "type": "i64"
+          },
+          {
+            "name": "expires_at",
+            "type": "i64"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": {
+                "name": "DealState"
+              }
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DealCancelled",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parcel_id",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DealCompleted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parcel_id",
+            "type": "u64"
+          },
+          {
+            "name": "seller",
+            "type": "pubkey"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DealFunded",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parcel_id",
+            "type": "u64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DealListed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parcel_id",
+            "type": "u64"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DealRejected",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parcel_id",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DealState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Listed"
+          },
+          {
+            "name": "Funded"
+          },
+          {
+            "name": "Completed"
+          },
+          {
+            "name": "Cancelled"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Expired"
+          },
+          {
+            "name": "Refunded"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EncumbranceLifted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parcel_id",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EncumbrancePlaced",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parcel_id",
+            "type": "u64"
+          },
+          {
+            "name": "kind",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Parcel",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u64"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "lat_e6",
+            "type": "i32"
+          },
+          {
+            "name": "lng_e6",
+            "type": "i32"
+          },
+          {
+            "name": "area_sqm",
+            "type": "u32"
+          },
+          {
+            "name": "document_cid",
+            "type": "string"
+          },
+          {
+            "name": "document_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "encumbrance",
+            "type": "u8"
+          },
+          {
+            "name": "enc_by",
+            "type": "pubkey"
+          },
+          {
+            "name": "enc_cid",
+            "type": "string"
+          },
+          {
+            "name": "active_deal",
+            "type": "bool"
+          },
+          {
+            "name": "deal_nonce",
+            "type": "u32"
+          },
+          {
+            "name": "registered_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ParcelRegistered",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u64"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RefundClaimed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parcel_id",
+            "type": "u64"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

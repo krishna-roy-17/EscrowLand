@@ -1,0 +1,11 @@
+node_modules/
+dist/
+target/
+.env
+.env.*
+!.env.example
+*-keypair.json
+id.json
+.anchor/
+test-ledger/
+.DS_Store
